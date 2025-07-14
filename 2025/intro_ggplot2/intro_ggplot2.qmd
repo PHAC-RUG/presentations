@@ -72,18 +72,17 @@ g2 <- ggplot(ggplot_downloads_df,          # Data
              geom_point()                  # Layer
 
 g2
-
 ```
 
 ## Select plot types
 
 [![https://ouyanglab.com/covid19dataviz/ggplot2.html](plot_types.png)](https://ouyanglab.com/covid19dataviz/ggplot2.html)
 
-## How to make a good plot? {.smaller}
+## What makes for a good plot? {.smaller}
 
 -   Easy to start with some minimally viable code for a plot, but how does one make a cleaner and more polished graph?
 
-    -   Ironically, you need more lines of code to have a less cluttered plot
+    -   Ironically, more lines of code are needed for a less cluttered plot
 
 -   By utilizing rest of the components, one can add more features to the graph and also clean up unnecessary elements
 
@@ -94,8 +93,7 @@ g2
 ```{r}
 #| echo: true
 #| message: false
-#| code-line-numbers: "|6"
-library(scales)
+#| code-line-numbers: "4"
 
 g3 <- ggplot(ggplot_downloads_df,          # Data
              aes(x = date, y = count)) +   # Mapping
@@ -103,7 +101,6 @@ g3 <- ggplot(ggplot_downloads_df,          # Data
              geom_smooth()                 # Layer (additional)
   
 g3
-
 ```
 
 ## Polishing the plot - Scaling layer {.smaller}
@@ -111,7 +108,8 @@ g3
 ```{r}
 #| echo: true
 #| message: false
-#| code-line-numbers: "|7-10"
+#| code-line-numbers: "1,7,8,9,10"
+
 library(scales)
 
 g4 <- ggplot(ggplot_downloads_df,          # Data
@@ -124,7 +122,6 @@ g4 <- ggplot(ggplot_downloads_df,          # Data
                )                           # Scale
   
 g4
-
 ```
 
 ## Polishing the plot - Theme layer {.smaller}
@@ -132,8 +129,7 @@ g4
 ```{r}
 #| echo: true
 #| message: false
-#| code-line-numbers: "|11"
-library(scales)
+#| code-line-numbers: "9"
 
 g5 <- ggplot(ggplot_downloads_df,          # Data
              aes(x = date, y = count)) +   # Mapping
@@ -145,7 +141,6 @@ g5 <- ggplot(ggplot_downloads_df,          # Data
                ) +                         # Scale
              theme_minimal()               # Theme
 g5
-
 ```
 
 ## Polishing the plot - Specifying Labels {.smaller}
@@ -153,8 +148,7 @@ g5
 ```{r}
 #| echo: true
 #| message: false
-#| code-line-numbers: "|12-15"
-library(scales)
+#| code-line-numbers: "10-13"
 
 g6 <- ggplot(ggplot_downloads_df,          # Data
              aes(x = date, y = count)) +   # Mapping
@@ -170,7 +164,6 @@ g6 <- ggplot(ggplot_downloads_df,          # Data
                          x = NULL,
                          y = NULL)         # Labels
 g6
-
 ```
 
 ## Polishing the plot - Modify Colour {.smaller}
@@ -178,8 +171,7 @@ g6
 ```{r}
 #| echo: true
 #| message: false
-#| code-line-numbers: "|5"
-library(scales)
+#| code-line-numbers: "3"
 
 g7 <- ggplot(ggplot_downloads_df,          # Data
              aes(x = date, y = count)) +   # Mapping
@@ -195,11 +187,11 @@ g7 <- ggplot(ggplot_downloads_df,          # Data
                          x = NULL,
                          y = NULL)         # Labels
 g7
-
 ```
 
 ## Where can ggplot2 visuals be used? {.smaller}
 
+::: {.incremental}
 -   RStudio
 
 -   HTML documents
@@ -215,9 +207,11 @@ g7
 -   Interactive apps
 
 -   Copy + Paste them in emails, reports, briefing notes, etc.
+:::
 
-## Suggested avenues to explore {.smaller}
+## Suggested advance topics {.smaller}
 
+::: {.incremental}
 -   Experiment with different types of graphs
 -   Change default parameters
 -   Plot maps
@@ -228,6 +222,7 @@ g7
 -   Compare and contrast `ggplot2` with base R or different libraries
 -   Match Government of Canada look and feel
 -   Make visuals colour-blind friendly and generally compliant with accessibility standards
+:::
 
 ## Resources {.smaller}
 
