@@ -209,7 +209,7 @@ g7
 -   Copy + Paste them in emails, reports, briefing notes, etc.
 :::
 
-## Suggested advance topics {.smaller}
+## Suggested advanced topics {.smaller}
 
 ::: {.incremental}
 -   Experiment with different types of graphs
