@@ -4,6 +4,7 @@ Presentations files from PHAC R Usergroup lunch-and-learn sessions are stored he
 
 ## Data visualization
 - [Introduction to ggplot2](2025/intro_ggplot2) - [Presentation file](https://raw.githack.com/PHAC-RUG/presentations/main/2025/intro_ggplot2/intro_ggplot2.html)
+- [ggplot2 best practices](2021/ggplot_best_practices) - [Presentation file](https://raw.githack.com/PHAC-RUG/presentations/main/2021/ggplot_best_practices/data_viz_checklist.html)
 
 ## Artificial Intelligence (AI)
 - [Using LLMs for Data Analysis](2025/llm_data_analysis) - [Presentation file](https://raw.githack.com/PHAC-RUG/presentations/main/2025/llm_data_analysis/localllm.html)
