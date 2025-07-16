@@ -39,11 +39,11 @@ g1
 
 ## ggplot2 overview {.smaller}
 
--   Part of the `tidyverse` suite of packages, `ggplot2` offers great consistency with `dplyr` pipes and syntax, with one very **notable exception**: the use of `+` instead of `%>%` to connect functions/verbs
+-   Part of the `tidyverse` suite of packages, `ggplot2` offers great consistency with `dplyr` pipes and syntax ^[there is one very **notable exception**, which is the use of `+` instead of `%>%` to connect functions/verbs]
 
--   "gg" refers to "[The Grammar of Graphics](https://link.springer.com/book/10.1007/0-387-28695-0)," a 1999 book from Leland Wilkinson that laid out a framework for creating statistical graphics in **layered components**
+-   "gg" refers to "[The Grammar of Graphics](https://link.springer.com/book/10.1007/0-387-28695-0)," a 1999 book from Leland Wilkinson that provides a framework for creating statistical graphics in **layered components**
 
--   The "2" in `ggplot2` alludes to the fact that this package supplants an older, less efficient library called `ggplot`, but since the developer wanted to support legacy usage of the older library, both packages were maintained for a period of time. Nevertheless, `ggplot()` remains as the main function in `ggplot2`
+-   The "2" in `ggplot2` alludes to the fact that this package supplants an older library simply called `ggplot`, both developed by Hadley Wickham ^[the main function in `ggplot2` is still called `ggplot()`]
 
 ## Anatomy of a plot
 
@@ -74,10 +74,6 @@ g2 <- ggplot(ggplot_downloads_df,          # Data
 g2
 ```
 
-## Select plot types
-
-[![https://ouyanglab.com/covid19dataviz/ggplot2.html](plot_types.png)](https://ouyanglab.com/covid19dataviz/ggplot2.html)
-
 ## What makes for a good plot? {.smaller}
 
 -   Easy to start with some minimally viable code for a plot, but how does one make a cleaner and more polished graph?
@@ -86,9 +82,9 @@ g2
 
 -   By utilizing rest of the components, one can add more features to the graph and also clean up unnecessary elements
 
--   Implement some good data visualization practices. Author Stephanie Evergreen has a 24-point checklist on [her website](https://stephanieevergreen.com/rate-your-visualization/), and a [previous presentation](https://raw.githack.com/najsaqib/naj_lab/main/data_viz_checklist.html) in the user group shows how to incorporate that in `ggplot2`
+-   Implement some good data visualization practices ^[Author Stephanie Evergreen has a 24-point checklist on [her website](https://stephanieevergreen.com/rate-your-visualization/), and a [previous presentation](https://raw.githack.com/najsaqib/naj_lab/main/data_viz_checklist.html) in the user group shows how to incorporate that in `ggplot2`]
 
-## Polishing the plot - Additional Geom {.smaller}
+## Polishing the plot - Adding another Geom {.smaller}
 
 ```{r}
 #| echo: true
@@ -124,7 +120,7 @@ g4 <- ggplot(ggplot_downloads_df,          # Data
 g4
 ```
 
-## Polishing the plot - Theme layer {.smaller}
+## Polishing the plot - Adding theme layer {.smaller}
 
 ```{r}
 #| echo: true
@@ -166,7 +162,7 @@ g6 <- ggplot(ggplot_downloads_df,          # Data
 g6
 ```
 
-## Polishing the plot - Modify Colour {.smaller}
+## Polishing the plot - Modifying Colour {.smaller}
 
 ```{r}
 #| echo: true
@@ -189,40 +185,33 @@ g7 <- ggplot(ggplot_downloads_df,          # Data
 g7
 ```
 
-## Where can ggplot2 visuals be used? {.smaller}
+## From start to finish {.smaller}
 
-::: {.incremental}
--   RStudio
+```{r}
+#| message: false
+library(patchwork)
 
--   HTML documents
+(g2 + g4) / 
+(g5 + g7)
+             
+```
 
--   Word/Powerpoint files
+## Where to go from here? {.smaller}
 
--   Markdown documents
-
--   Books
-
--   Websites
-
--   Interactive apps
-
--   Copy + Paste them in emails, reports, briefing notes, etc.
-:::
-
-## Suggested advanced topics {.smaller}
-
-::: {.incremental}
+::: incremental
 -   Experiment with different types of graphs
 -   Change default parameters
--   Plot maps
--   Play around with various `ggplot2` extensions
--   Learn how to incorporate `ggplot2` graphs in R Markdown/Quarto reports
+-   Learn how to incorporate `ggplot2` graphs in R Markdown/Quarto outputs
 -   Implement reactive `ggplot2` objects within Shiny apps
 -   Explore interactive plots via `ggiraph` or `ggplotly` packages
 -   Compare and contrast `ggplot2` with base R or different libraries
 -   Match Government of Canada look and feel
 -   Make visuals colour-blind friendly and generally compliant with accessibility standards
 :::
+
+## Example plot types
+
+[![https://ouyanglab.com/covid19dataviz/ggplot2.html](plot_types.png)](https://ouyanglab.com/covid19dataviz/ggplot2.html)
 
 ## Resources {.smaller}
 
