@@ -1,0 +1,55 @@
+---
+title: "Introduction to Data cleaning"
+date: "2025-08-06"
+output:
+  html_document: 
+    css: styles.css
+    toc: yes
+    toc-title: TOC
+    toc_float: true
+    number_sections: true
+  suppress_warnings: true
+  highlight: tango
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+Data cleaning using the Tidyverse and Janitor
+
+# Introduction
+
+This session will touch on different functions you can use from the tidyverse suite of packages, and the janitor package. We will also be using the 'Messy' package to (as you would expect) turn some of the base R datasets into a mess for cleaning practice. 
+
+There are many resources available, but the information on Data tidying is primarily derived from [R for Data Science (2e)](https://r4ds.hadley.nz/)
+
+
+
+## What is clean data?
+
+
+
+
+## Data wrangling (tidy up that mess!)
+
+```{r setup}
+
+# Check if pacman is installed, if not install
+if (!require("pacman")) install.packages("pacman")
+
+library(pacman) #installs and loads necessary packages
+
+#devtools::install_github("amcrisan/Adjutant")
+
+p_load(tidyverse, #
+       janitor,   # 
+       here,      # self contained environment
+       messy)     # A package that allows you to make any dataset Messy, great for learning and practice!!
+
+
+
+
+data("iris")
+   
+```
+
