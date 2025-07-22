@@ -1,4 +1,4 @@
-# Lunch and learn presentation
+# Lunch and learn presentations
 
 Presentations files from PHAC R Usergroup lunch-and-learn sessions are stored here for public access. Linked below are the folders containing the materials from a the lunch and learn sessions, as well links to rendered HTML files where applicable.
 
