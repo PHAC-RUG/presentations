@@ -1,0 +1,119 @@
+/* styles.css */
+
+/* Customize h1 heading */
+body h1 {
+  color: #2A2A72;
+  font-family: Leelawadee, sans-serif;
+  font-size: 28px;
+}
+
+/* Customize h2 heading */
+body h2 {
+  color: #87A2D4;
+  font-family: Leelawadee, sans-serif;
+  font-size: 20px;
+}
+
+/* Customize h2 heading */
+body h3 {
+  color: #87A2D4;
+  font-family: Leelawadee, sans-serif;
+  font-size: 18px;
+}
+
+/* Customize regular text */
+body {
+  font-family: "Leelawadee", Arial, sans-serif; /* Replace "Graphik" with your desired font name */
+  font-size: 16px; /* Adjust the size as needed */
+  font-weight: normal; /* Adjust the font weight if desired */
+  line-height: 1.5; /* Adjust the line height if desired */
+}
+
+/* Customize Table of Contents (TOC) font */
+.tocify-item {
+  font-family: Leelawadee, sans-serif; /* Replace "Graphik" with your desired font name */
+}
+
+/* Customize TOC item highlight color */
+.tocify-item:hover {
+  background-color: #87A2D4; /* Replace with your desired highlight color */
+}
+
+/* Customize active section highlight color in TOC */
+.tocify-item.active {
+  background-color: #bbd5ed; /* Replace with your desired highlight color */
+}
+
+/* LOGO above TOC */
+
+#TOC::before {
+  content: "";
+  display: block;
+  height: 50px;
+  margin: 2em 20px 40px 20px;
+  background-image: url("RStudio-Logo-Flat.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+
+/* Customize shaded box */
+.blackbox {
+  padding: 1em;
+  background: #E0E0E0;
+  color: black;
+  border: 2px #A02020;
+  border-radius: 10px;
+}
+.center {
+  text-align: center;
+}
+
+
+/* Info and warning boxes */
+
+/* Style for the alert box */
+.alert-box {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* Style for the (i) icon */
+.alert-icon img {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+/* Style for the alert text */
+.alert-text {
+  margin-left: 5px;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+/* Specific styles for different alert boxes */
+.alert-info {
+  background-color: #BED5EF;
+  border-color: #5C95D6;
+  color: #0D427F;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
