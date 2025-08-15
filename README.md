@@ -3,7 +3,7 @@
 Presentations files from PHAC R Usergroup lunch-and-learn sessions are stored here for public access. Linked below are the folders containing the materials from a the lunch and learn sessions, as well links to rendered HTML files where applicable.
 
 ## Data wrangling
-- [Introduction to data cleaning](2025/Intro%20to%20data%20cleaning) - [Presentation file]()
+- [Introduction to data cleaning](2025/Intro%20to%20data%20cleaning) - [Presentation file](2025/Intro to data cleaning/data_cleaning.html)
 
 ## Data visualization
 - [Introduction to ggplot2](2025/intro_ggplot2) - [Presentation file](https://raw.githack.com/PHAC-RUG/presentations/main/2025/intro_ggplot2/intro_ggplot2.html)
