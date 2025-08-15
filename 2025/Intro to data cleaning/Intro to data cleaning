@@ -1,36 +1,108 @@
 ---
-title: "Introduction to Data cleaning"
-date: "2025-08-06"
-output:
-  html_document: 
+title: "Introduction to Data Cleaning using the Tidyverse and Janitor"
+date-modified: today
+editor: visual
+format:
+  html:
+    toc: true
+    toc-location: left
     css: styles.css
-    toc: yes
-    toc-title: TOC
-    toc_float: true
-    number_sections: true
-  suppress_warnings: true
-  highlight: tango
-editor_options: 
-  markdown: 
-    wrap: 72
+    embed-resources: true
+    grid:
+      sidebar-width: 300px
+      body-width: 1000px
+      margin-width: 100px
+comments:
+  hypothesis: 
+    theme: clean
 ---
-
-Data cleaning using the Tidyverse and Janitor
 
 # Introduction
 
-This session will touch on different functions you can use from the tidyverse suite of packages, and the janitor package. We will also be using the 'Messy' package to (as you would expect) turn some of the base R datasets into a mess for cleaning practice. 
+Data cleaning is often the most time-consuming part of any analysis — but also the most important.
 
+<q><i>Without clean data, or clean enough data, your data science is worthless.</i></q> — Michael Stonebraker, adjunct professor, MIT
+
+This tutorial will touch on different functions for data cleaning (or tidying), that you can use from the [Tidyverse](https://www.tidyverse.org/) and [janitor](https://cran.r-project.org/web/packages/janitor/index.html) packages to make messy data analysis-ready in a reproducible way. We will also be using the [{Messy}](https://nrennie.rbind.io/blog/introducing-messy-r-package/) package to turn a dataset into a complete mess for cleaning practice.
+
+Topics we will cover:
+
+-   Principles of clean (tidy) data
+-   Inspecting and diagnosing issues
+-   Cleaning names and values
+-   Reshaping data
+-   Building wrangling pipelines
+
+::: callout-tip
 There are many resources available, but the information on Data tidying is primarily derived from [R for Data Science (2e)](https://r4ds.hadley.nz/)
+:::
 
+```{r hidden setup, echo=FALSE, warning=FALSE}
 
+library(pacman) 
+
+p_load(extrafont,
+       tidyverse,
+       janitor)     
+
+```
 
 ## What is clean data?
 
+Clean (or Tidy) data is formatted in a structured way, ready for analysis. It is ideally free from errors, missing values and other general inconsistencies that would impede analysis.
+
+-   no duplicate rows/values
+-   free from spelling errors
+-   contains the correct data types (e.g. numeric data is not stored as a character)
+-   special characters are removed unless specifically needed
+-   Nulls
+
+## Tidy Data principles
+
+Tidy data was originally coined by Hadley Wickam, and follows a series of guiding principles. [Ref](https://vita.had.co.nz/papers/tidy-data.pdf)
+
+The data must be structured such that: - each row is an observation - each column is a variable measured - data can be tabulated easily
+
+### Messy data
+
+```{r tidy example, echo=FALSE}
+#Insert images here
+
+messy <- tibble(
+  `Patient ID` = c(1, 2, 3),
+  `Sex (M/F)` = c("M", "F", "M"),
+  `Blood Pressure (Day 1)` = c(120, 110, 130),
+  `Blood Pressure (Day 2)` = c(118, 108, 125))
 
 
+messy
 
-## Data wrangling (tidy up that mess!)
+```
+
+### Tidy data
+
+```{r, echo=FALSE}
+tidy <- messy %>%
+  clean_names() %>%
+  pivot_longer(starts_with("blood_pressure"),
+               names_to = "day",
+               values_to = "blood_pressure")
+
+tidy
+
+```
+
+## Why use tidyverse and janitor?
+
+-   <b>tidyverse:</b> cohesive set of packages for importing, cleaning, transforming, and visualizing data.
+
+-   <b>janitor:</b> lightweight helpers for quick cleaning (e.g., clean_names(), tabyl(), get_dupes()).
+
+<i>Together, they make cleaning code more readable and analysis reproducible.</i>
+
+# Data cleaning steps
+
+## 1. Setup and load libraries
 
 ```{r setup}
 
@@ -39,17 +111,431 @@ if (!require("pacman")) install.packages("pacman")
 
 library(pacman) #installs and loads necessary packages
 
-#devtools::install_github("amcrisan/Adjutant")
-
-p_load(tidyverse, #
-       janitor,   # 
+p_load(tidyverse, # 'Tidyverse' is a set of packages designed for data science
+       janitor,   # Tools for examining and cleaning dirty data
        here,      # self contained environment
+       openxlsx,  # Importing/writing and styling excel xlsx files
        messy)     # A package that allows you to make any dataset Messy, great for learning and practice!!
 
+```
+
+## 2. Import and Inspect Data
+
+### Import
+
+Import your data into R. This can be done through click and point, or by using code.
+```{r}
+
+# csv
+#data <- read.csv("dataset.csv")
+
+# Excel
+# Read entire workbook (first sheet by default)
+#data_excel_openxlsx <- read.xlsx("AMR_package_data.xlsx")
+
+# Read a specific sheet
+#data_excel_openxlsx_named <- read.xlsx("AMR_package_data.xlsx", sheet = 2)
+
+# Example dataset
+demo <- tibble(
+  id = 1:5,
+  name = c("Alice", "Bob", "Charlie", "Dana", "Eli"),
+  age = c(25, 30, 35, 40, 45),
+  ward = c("ICU", "ICU", "ER", "ER", "Ward 3"))
+
+```
+
+
+### Inspect the data
+
+Before cleaning, we need to understand what our data looks like.
+
+### View column names
+
+```{r}
+colnames(demo)  # base R: prints all column names, in order of where they appear in the data
+
+ls(demo) #prints a list of the column names in alphabetical order
+
+```
+
+### Inspect the rows
+
+```{r}
+glimpse(demo) #tidyverse: gives column names, types, and a preview of data
+
+head(demo) #base R: shows the first 6 rows
+
+```
+
+### frequency tables
+
+```{r}
+
+demo %>% 
+  tabyl(ward) # janitor: quick value counts for a variable
+
+```
+
+# 3. Exploring and diagnosing problems
+
+## Clean column names
+
+```{r}
+# Simulate messy names
+demo_messy_names <- tibble(
+  `Patient ID ` = c(1,2),
+  ` Ward# ` = c("ICU","ER"),
+  ` Date of Collection ` = c("01-02-2024","2024-03-01"))
+
+head(demo_messy_names)
+
+```
+
+Using the clean_names() function from janitor:
+```{r}
+# Clean names
+cleaned_demo <- demo_messy_names %>%
+  clean_names() #converts to snake_case
+
+colnames(cleaned_demo)
+
+```
+
+### Rename columns that still have issues
+
+If there were still issues in the variable names after using clean_names, we can use 'rename' from dplyr:
+```{r, eval=FALSE}
+cleaned_data_colnames <- data_colnames %>% 
+  rename(
+  #new_name = oldname,
+  "patient_id" = "pat_ien_t",
+  "ward" = "war_d")
+
+colnames(cleaned_data_colnames)
+```
+
+## Remove empty columns
+janitor can be used to remove completely empty columns.
+```{r, eval=FALSE}
+#If there are empty columns or empty columns are suspected
+
+#remove_empty_cols(df)
+
+# Removing empty columns (none here, just showing syntax)
+cleaned_demo <- cleaned_demo %>% remove_empty("cols")
+
+```
+
+## Detecting duplicates
+janitor can be used to detect duplicates, dplyr can be used to keep distinct observations.
+```{r}
+demo_dupes <- demo %>%
+  bind_rows(demo[1,]) # Add a duplicate for demo
+
+demo_dupes %>% 
+  get_dupes(id) # janitor: find duplicates
+
+demo_no_dupes <- demo_dupes %>%
+  distinct() # dplyr: remove duplicate rows
+
+```
+
+## Check categories
+
+-   looking for inconsistencies in categorical variables
+
+```{r}
+demo_cats <- tibble(
+  id = 1:5,
+  gender = c("Male", " male ", "F", "f", "Female"))
+
+unique(demo_cats$gender) # base R: unique values
+
+demo_cats %>% tabyl(gender) # janitor: frequency table
+
+```
+
+### Checking multiple categories at once
+
+We can use the 'lapply' function, this allows a function to be applied over a list or vector
+```{r}
+
+lapply(demo_cats, unique) # base R: list unique values for each column
+
+```
+
+## Working with strings
+Text variables (like names, IDs, or categories) often have inconsistent spacing, capitalization, or typos. The stringr package (part of the tidyverse) provides helpful functions to tidy these up.
+```{r}
+
+demo_strings <- tibble(
+  id = 1:4,
+  ward = c(" icu", "ER ", "Ward 3", "  eR"),
+  patient = c("Alice", "BOB", "charlie ", " dana"))
+
+demo_strings
+```
+
+### Trim whitespace
+```{r}
+demo_strings %>%
+  mutate(ward = str_trim(ward))  # removes leading and trailing spaces
+```
+
+### Standardizing case
+```{r}
+demo_strings %>%
+  mutate(
+    ward = str_to_upper(ward),   # ICU, ER, etc.
+    patient = str_to_title(patient))  # Capitalize names properly
+```
+
+### Detect patterns
+```{r}
+demo_strings %>%
+  mutate(is_icu = str_detect(ward, regex("icu", ignore_case = TRUE))) # TRUE if 'icu' appears
+
+```
+
+### Replace strings
+```{r}
+demo_strings %>%
+  mutate(ward = str_replace_all(ward, regex("ward ", ignore_case = TRUE), "W-"))
+
+```
 
 
 
-data("iris")
+## Working with dates
+
+**Lubridate** is a package from the tidyverse, it can be used to manipulate dates.
+
+Dates can also be manipulated with **Janitor** 
+  - sas_numeric_to_date: converts SAS numeric dates to R date objects
+  - convert_to_date/datetime: converts datetime formats from Excel
+  - excel_numeric_to_date: convert dates encoded as serial numbers to date class
+
+```{r}
+#?lubridate
+
+# Example messy date dataset
+demo_dates <- tibble(
+  id = 1:4,
+  date_raw = c("01-02-2024", "2024/03/15", "15-Apr-24", "45000")) # last one is a SAS numeric date
+
+demo_dates
+
+```
+
+### Parsing dates with lubridate
+```{r, warning=FALSE}
+
+demo_dates <- demo_dates %>%
+  mutate(
+    date_parsed = dmy(date_raw),     # Day-Month-Year (e.g., "15-Apr-24")
+    date_parsed = coalesce(date_parsed, ymd(date_raw)), # Year-Month-Day (e.g., "2024/03/15")
+    date_parsed = coalesce(date_parsed, mdy(date_raw)))  # Month-Day-Year (e.g., "01-02-2024")
+  
+
+demo_dates
+
+```
+
+### Converting SAS numeric dates with janitor
+
+Sometimes dates are stored as numbers (days since 1960).
+```{r, warning=FALSE}
+demo_dates <- demo_dates %>%
+  mutate(date_final = ifelse(str_detect(date_raw, "^[0-9]+$"),
+                             janitor::sas_numeric_to_date(as.numeric(date_raw)),
+                             date_parsed))
+
+demo_dates
+
+```
+
+Once dates are in a proper Date format, you can extract parts.
+
+
+# 4. Data wrangling with dplyr/tidyr
+
+The core funtions:
+
+-   select() / rename() – choose or rename columns
+
+-   filter() – subset rows
+
+-   mutate() – create or transform columns
+
+-   arrange() – sort rows
+
+-   summarise() + group_by() – aggregate data
+
+-   pivot_longer() / pivot_wider() – reshape data
+
+```{r}
+
+# Selecting columns
+demo %>% select(name, age)
+
+# Filtering rows
+demo %>% filter(age > 30)
+
+# Creating a new variable
+demo %>% mutate(age_group = if_else(age < 35, "Young", "Older"))
+
+# Sorting
+demo %>% arrange(desc(age))
+
+# Grouping and summarizing
+demo %>% group_by(ward) %>%
+  summarise(mean_age = mean(age))
+
+```
+
+# 5. Handling missing or inconsistent data
+
+```{r}
+demo_missing <- tibble(
+  id = 1:5,
+  gender = c("Male", " male ", "F", "f", "Female"),
+  age = c(25, NA, 40, NA, 32))
+
+```
+
+## Recoding categories
+
+```{r}
+demo_missing %>%
+  mutate(gender = recode(gender,
+                         " male " = "Male",
+                         "f" = "Female",
+                         "F" = "Female"))
+```
+
+## Replacing missing values
+
+```{r}
+
+demo_missing %>% 
+  mutate(age = replace_na(age, 99))
+
+```
+
+
+
+# 6. Reshaping Data
+
+Reshaping between wide and long formats
+
+## Wide --\> Long
+
+```{r}
+demo_wide <- tibble(
+  id = 1:3,
+  bp_day1 = c(120, 130, 110),
+  bp_day2 = c(118, 135, 115))
+
+demo_wide
+```
+
+
+```{r}
+demo_wide %>%
+  pivot_longer(cols = starts_with("bp_day"),
+               names_to = "day",
+               values_to = "blood_pressure")
+
+
+```
+
+## Long --\> Wide
+
+```{r}
+
+demo_long <- tibble(
+  id = rep(1:3, each = 2),
+  day = rep(c("day1","day2"),3),
+  blood_pressure = c(120, 118, 130, 135, 110, 115))
+
+demo_long
+
+```
+```{r}
+demo_long %>%
+  pivot_wider(names_from = day,
+              values_from = blood_pressure)
+```
+
+
+# Tidy pipeline: putting it all together
+
+```{r}
+final_demo <- demo_missing %>%
+  clean_names() %>%                       # clean column names
+  mutate(gender = str_trim(gender),       # trim whitespace
+         gender = recode(gender,          # fix categories
+                         "male" = "Male",
+                         "f" = "Female",
+                         "F" = "Female"),
+         age = replace_na(age, 99)) %>%   # replace missing ages
+  distinct()                              # remove duplicates
+
+final_demo
+
+```
+
+“Analysis is the art of creation through destruction.” ― P.S. Baber, Cassie Draws the Universe
+
+
+# Practice
+
+Example data used for this demonstration comes from the AMR package.
+
+```{r}
+test_data <- read.xlsx("AMR_package_data.xlsx")
+```
+
+The data is generally clean, so we will be using the package 'Messy' to intentionally make it worse so we can practice cleaning.
+
+```{r}
+#create a super messy dataframe for practicing
+very_messy_test_data <- messy(test_data) %>%
+  messy_colnames()
+
+
+#create a messy dataframe, similar to what we might see in practice
+messy_test_data <- test_data %>%
+  #(cols = c("patient","ward"), messiness = 0.1) %>%
+  add_whitespace(cols = "ward", messiness = 0.1) %>%
+  duplicate_rows(messiness = 0.1, shuffle = TRUE) %>%
+  make_missing(cols = "age", messiness = 0.1, missing = NA) 
+#%>% messy_colnames() changes everytime it runs
+
    
 ```
+
+Your challenge:
+ - Clean column names
+ - Check categories for inconsistencies
+ - Find and remove duplicates
+ - Handle missing values
+ - Reshape data to long format for antibiotic results
+
+
+------------------------------------------------------------------------
+
+
+# Resources
+
+1.  [R for Data Science](https://r4ds.hadley.nz/)
+
+2.  [The Epidemiologist R Handbook](https://epirhandbook.com/en/reports-with-r-markdown.html)
+
+3.  [janitor](https://cran.r-project.org/web/packages/janitor/index.html)
+
+4.  [tidyverse](https://www.tidyverse.org/)
+
+5.  [AMR package](https://amr-for-r.org/)
 
