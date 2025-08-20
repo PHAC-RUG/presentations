@@ -1,0 +1,104 @@
+---
+title: "Office hours"
+author: "PHAC-RUG"
+format: html
+editor: visual
+---
+
+## Summer of R Basics - Office hours
+
+Topics we covered through this learning series:
+
+  - Intro to R and the tidyverse
+  - ggplot2 for data viz
+  - Data cleaning using janitor and the tidyverse
+
+```{r, echo=FALSE}
+library(pacman)
+
+p_load(tidyverse)
+
+```
+
+
+## Troubleshooting tips
+
+
+When stuck, do not despair! Chances are that someone else has run into the same issue before. Here are some practical steps to try and troubleshoot before reaching out for help:
+
+### 1. Read the Function Manual
+
+ - Use ?function_name or help(function_name) to pull up documentation.
+```{r}
+# help for packages
+?tidyverse
+
+# help for functions
+?mutate
+
+```
+ 
+ - Check the Examples section at the bottom of help pages — often the quickest way to see correct usage.
+ - Try example(function_name) to run a few built-in demos.
+```{r}
+
+example(summary)
+
+```
+ 
+
+### 2. Look for Clues in Error Messages
+
+ - Don’t ignore error messages — read them carefully.
+ - Break them down: they usually tell you what object is missing, what type is expected, or where the code broke.
+ - If the message is unclear, copy the exact text into a search engine or Stack Overflow.
+
+### 3. Simplify the Problem
+
+ - Reproduce the issue with the smallest possible piece of code (a “minimal reproducible example”).
+ - This often reveals the problem right away. If not, it makes it easier for others to help you.
+
+### 4. Search Before You Ask
+
+ - Google or search Stack Overflow.
+ - Include “R” + function name + error message in your search.
+ - R has been around a long time — many issues already have answers online.
+
+### 5. Leverage R Resources
+
+ - [RStudio Community](https://forum.posit.co/)
+ - CRAN package vignettes (vignette("packagename"))
+ - Cheatsheets from Posit (R Cheatsheets)
+ 
+
+### 6. Asking for Help (Last Step)
+
+If you’ve tried the above and still need help:
+
+ - Provide a clear description of the problem.
+ - Include code or example code with the issue.
+ - Mention what you’ve already tried.
+ 
+Another option: 
+
+ - using AI
+  - <https://claude.ai/>
+  
+::: {.callout-warning}
+Be mindful of AI tools, they can hallucinate and produce responses that are not useful. Do not include sensitive information in your queries. 
+::: 
+ 
+
+Asking for help on online forums
+
+<https://stackoverflow.com/help/how-to-ask>
+
+
+## Courses
+
+### Paid, with certificates
+[R for PH/epi](https://appliedepi.org/training/training.html)
+[R for Data science](https://www.edx.org/certificates/professional-certificate/harvardx-data-science) 
+
+### Free 
+
