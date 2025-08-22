@@ -1,7 +1,14 @@
 ---
-title: "Office hours"
+title: "Troubleshooting guide"
 author: "PHAC-RUG"
-format: html
+format: 
+  html:
+    toc: true
+    toc-location: left
+    embed-resources: true  
+resources:
+  - ../shared_images/*.png
+  - images/** 
 editor: visual
 ---
 
@@ -14,19 +21,70 @@ Topics we covered through this learning series:
   - Data cleaning using janitor and the tidyverse
 
 ```{r, echo=FALSE}
+
+knitr::opts_chunk$set(error = TRUE) 
+
 library(pacman)
 
-p_load(tidyverse)
+p_load(tidyverse,
+       here)
 
 ```
 
 
 ## Troubleshooting tips
 
+![Illustration by Allison Horst](debugging.jpg) 
+[Image taken from [Troubleshooting in R](https://ecorepsci.github.io/reproducible-science/troubleshooting.html), Chapter 11.2 How to look for help]{.smallcaps}
+
 
 When stuck, do not despair! Chances are that someone else has run into the same issue before. Here are some practical steps to try and troubleshoot before reaching out for help:
 
-### 1. Read the Function Manual
+### 1. Check R and your Environment
+
+Before diving deep, make sure your setup is working as expected:
+
+  - <b>Is R itself up to date?</b>
+    - Run `R.version.string` to check.
+    - Updating to the latest release can fix known bugs.
+
+  - <b>Is RStudio (or your IDE) up to date?</b>
+    - RStudio regularly patches bugs and adds features that affect package handling and rendering.
+
+  - <b>Are your packages installed?</b>
+    - Use `installed.packages()` or try `library(packagename)` to confirm.
+    - If missing, install with `install.packages("packagename")`.
+
+  - <b>Are your packages loaded?</b>
+    - Just installing a package isn’t enough — you need to load it from your library
+      - `library(packagename)` at the top of your script or chunk.
+
+  - <b>Check for warnings when loading packages.</b>
+    - Warnings may indicate version conflicts, missing dependencies, or that an update is required.
+
+  - <b>Are packages up to date?</b>
+    - Run `old.packages()` to see what’s outdated 
+    - Update with `update.packages(ask = FALSE)` or point and click "Update" in the Packages tab
+
+  - <b>Check conflicts between packages.</b>
+    - If two packages have functions with the same name, R will use the one loaded last.
+    - Use `conflicted::conflict_scout()` to identify overlaps.
+
+```{r, warning=TRUE}
+conflicted::conflict_scout()
+```
+    
+
+  - <b>Check your working directory.</b>
+    - Run `getwd()` to see where R is looking for files.
+    - Use `setwd()` or the [`here`](https://cran.r-project.org/web/packages/here/vignettes/here.html) package
+    - If your code can’t find a file, it might just be looking in the wrong place.
+
+  - <b>Restart your R session.</b>
+    - Sometimes lingering objects or masked functions cause strange errors.
+    - In RStudio: Session → Restart R or press `Ctrl + Shift + F10`.
+
+### 2. Read the Function Manual
 
  - Use ?function_name or help(function_name) to pull up documentation.
 ```{r}
@@ -40,6 +98,10 @@ When stuck, do not despair! Chances are that someone else has run into the same 
  
  - Check the Examples section at the bottom of help pages — often the quickest way to see correct usage.
  - Try example(function_name) to run a few built-in demos.
+
+::: {.callout-note}
+example() only works with packages that provided examples of use**
+:::
 ```{r}
 
 example(summary)
@@ -47,31 +109,72 @@ example(summary)
 ```
  
 
-### 2. Look for Clues in Error Messages
+### 3. Look for Clues in Error Messages
 
  - Don’t ignore error messages — read them carefully.
- - Break them down: they usually tell you what object is missing, what type is expected, or where the code broke.
- - If the message is unclear, copy the exact text into a search engine or Stack Overflow.
+```{r}
+df <- data.frame(
+  id = 1:3,
+  age = c("25", "thirty", "40"))
 
-### 3. Simplify the Problem
+# try to convert age to numeric
+df$age_num <- as.numeric(df$age)
+```
+ 
+ - Break them down: they usually tell you what object is missing, what type is expected, or where the code broke.
+ 
+    - In this example, R couldn't turn some of the values into numbers
+    - Inspect the data, in this case "thirty" would need to be converted to 30
+ 
+ - If the message is unclear, copy the exact text into a search engine or Stack Overflow.
+ 
+```{r Example}
+df2 <- data.frame(
+  site = c("A", "B", "C"),
+  var1 = c(1, 2, 3),
+  var2 = c(4, 5, 6))
+
+# Try to standardize multiple columns
+df2 %>% 
+  mutate(across(var1, var2, as.numeric()))
+
+```
+ 
+In this example we can search something like:
+"mutate across columns as.numeric"
+
+  - The AI summary has a suggested fix we can try, or we can click through the links to find a solution
+  
+![Fig 1. Google search results](search.png)  
+
+```{r Example fix}
+df2 %>%
+  mutate(across(c(var1, var2), as.numeric))
+
+```
+
+![Fig 2. Google search results, additional options](search2.png) 
+
+### 4. Simplify the Problem
 
  - Reproduce the issue with the smallest possible piece of code (a “minimal reproducible example”).
+  - Run the code incrementally, execute line by line or in small chunks
  - This often reveals the problem right away. If not, it makes it easier for others to help you.
 
-### 4. Search Before You Ask
+### 5. Search Before You Ask
 
  - Google or search Stack Overflow.
- - Include “R” + function name + error message in your search.
+ - Include “R” + function name + error message in your search (see example above)
  - R has been around a long time — many issues already have answers online.
 
-### 5. Leverage R Resources
+### 6. Leverage R Resources
 
  - [RStudio Community](https://forum.posit.co/)
  - CRAN package vignettes (vignette("packagename"))
  - Cheatsheets from Posit (R Cheatsheets)
  
 
-### 6. Asking for Help (Last Step)
+### 7. Asking for Help (Last Step)
 
 If you’ve tried the above and still need help:
 
@@ -82,23 +185,40 @@ If you’ve tried the above and still need help:
 Another option: 
 
  - using AI
-  - <https://claude.ai/>
+ 
+   - <https://claude.ai/>
   
 ::: {.callout-warning}
 Be mindful of AI tools, they can hallucinate and produce responses that are not useful. Do not include sensitive information in your queries. 
+![How hallucination can happen](chainhallucination.png) 
+[Image source](https://shelf.io/blog/garbage-in-garbage-out-ai-implementation/)
 ::: 
- 
 
-Asking for help on online forums
+Asking for help on online forums:
 
 <https://stackoverflow.com/help/how-to-ask>
 
 
+## Troubleshooting resources
+[A Beginner's Guide to Troubleshooting R Code](https://bioinformatics.ccr.cancer.gov/docs/btep-coding-club/CC2023/Troubleshooting_Rprog/)
+
+[Troubleshooting Error Messages](https://bookdown.org/yih_huynh/Guide-to-R-Book/trouble.html)
+
+[Troubleshooting in R](https://ecorepsci.github.io/reproducible-science/troubleshooting.html)
+
+[TROUBLESHOOTING AND HOW TO FIND HELP](https://ourcodingclub.github.io/tutorials/troubleshooting/)
+
+[Debugging](https://adv-r.hadley.nz/debugging.html)
+
 ## Courses
 
 ### Paid, with certificates
+
 [R for PH/epi](https://appliedepi.org/training/training.html)
+
 [R for Data science](https://www.edx.org/certificates/professional-certificate/harvardx-data-science) 
 
-### Free 
+### Free, with option for paid certificate
+
+[Learn R](https://www.codecademy.com/learn/learn-r)
 
