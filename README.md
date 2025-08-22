@@ -13,4 +13,4 @@ Presentations files from PHAC R Usergroup lunch-and-learn sessions are stored he
 - [Using LLMs for Data Analysis](2025/llm_data_analysis) - [Presentation file](https://raw.githack.com/PHAC-RUG/presentations/main/2025/llm_data_analysis/localllm.html)
 
 ## Troubleshooting Guide
-- [R Basics - Troubleshooting guide]() 
+- [R Basics - Troubleshooting guide](2025/Office hours/Trouble shooting guide) 
