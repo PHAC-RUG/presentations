@@ -4,7 +4,7 @@ Presentations files from PHAC R Usergroup lunch-and-learn sessions are stored he
 
 ## Intro to R
 - [Introduction to R Programming](2025) - [Presentation file](https://github.com/PHAC-RUG/presentations/blob/main/2025/Intro%20to%20R.pptx)
-- [Introduction to R Programming](2025) - [R code](https://raw.githack.com/PHAC-RUG/presentations/main/2025/R%Tidyverse%examples.R)
+- [Introduction to R Programming](2025) - [R code](https://github.com/PHAC-RUG/presentations/blob/main/2025/R%20Tidyverse%20examples.R)
 
 ## Data wrangling
 - [Introduction to data cleaning](2025/Intro%20to%20data%20cleaning) - [Presentation file]()
